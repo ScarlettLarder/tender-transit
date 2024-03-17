@@ -1,16 +1,16 @@
 ---
-import { db, Note } from 'astro:db';
+import { db, ScarlettNote } from 'astro:db';
 
-const comments = await db.select().from(Note);
+const notes = await db.select().from(ScarlettNote);
 ---
 
 <h2>Large note</h2>
 
 {
-  comments.map(({ note, date }) => (
+  notes.map(({ text, title }) => (
     <article>
-      <p>Author: {note}</p>
-      <p>{date}</p>
+      <p>Author: {text}</p>
+      <p>{title}</p>
     </article>
   ))
 }

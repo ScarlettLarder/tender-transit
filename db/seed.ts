@@ -1,6 +1,8 @@
-import { db } from 'astro:db';
 
-// https://astro.build/db/seed
-export default async function seed() {
-	// TODO
+import { db, ScarlettNote } from 'astro:db';
+
+export default async function() {
+  await db.insert(ScarlettNote).values([
+    { text: "ddwa", title: "WOWZA"},
+  ])
 }
