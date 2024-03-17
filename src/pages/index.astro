@@ -1,16 +1,39 @@
 ---
 import { db, ScarlettNote } from 'astro:db';
 
+function wowza() {
+  db.delete(ScarlettNote).values({ title });
+}
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const title = formData.get("title");
+  const text = formData.get("text");
+  if (typeof title === 'string' && typeof text === 'string') {
+    await db.insert(ScarlettNote).values({ title, text });
+  }
+}
+
 const notes = await db.select().from(ScarlettNote);
 ---
 
-<h2>Large note</h2>
-
+<h2>Notes</h2>
+<div>
+  <h3>Add a new note</h3>
+  <form method="POST" style="display: grid">
+    <label for="title">Title</label><br>
+    <input id="title" name="title"><br>
+    <label>Description</label><br>
+    <textarea id="text" name="text"></textarea><br>
+    <button type="submit">submit</button><br>
+  </form>
+</div>
 {
   notes.map(({ text, title }) => (
     <article>
       <p>Author: {text}</p>
       <p>{title}</p>
+      <button onclick="wowza({title})"> Delete</button>
     </article>
   ))
 }
